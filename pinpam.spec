@@ -1,6 +1,6 @@
 Name:           pinpam
 Version:        0.0.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        TPM2 backed PAM module and utility for pin-based authentication
 
 License:        GPL-3.0-or-later
