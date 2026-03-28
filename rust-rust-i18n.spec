@@ -14,10 +14,6 @@ URL:            https://crates.io/crates/rust-i18n
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  rust-criterion+default-devel
-BuildRequires:  rust-globwalk+default-devel
-BuildRequires:  rust-i18n-macro+default-devel
-BuildRequires:  rust-i18n-support+default-devel
 
 %global _description %{expand:
 Rust I18n is use Rust codegen for load YAML file storage translations on

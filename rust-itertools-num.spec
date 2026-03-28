@@ -15,8 +15,6 @@ URL:            https://crates.io/crates/itertools-num
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  rust-itertools+default-devel
-BuildRequires:  rust-quickcheck+default-devel
 
 %global _description %{expand:
 Numerical iterator tools. Extra iterators and iterator methods and

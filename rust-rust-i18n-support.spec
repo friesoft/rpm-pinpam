@@ -14,7 +14,6 @@ URL:            https://crates.io/crates/rust-i18n-support
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  rust-globwalk+default-devel
 
 %global _description %{expand:
 Support for rust-i18n crate.}
