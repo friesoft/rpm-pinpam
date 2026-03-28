@@ -1,6 +1,6 @@
 Name:           pinpam
 Version:        0.0.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        TPM2 backed PAM module and utility for pin-based authentication
 
 License:        GPL-3.0-or-later
@@ -54,11 +54,20 @@ EOF
 export CARGO_HOME=$(pwd)/.cargo
 cargo test --release --locked
 
+%post
+# Reload udev rules and trigger for TPM devices specifically
+udevadm control --reload-rules >/dev/null 2>&1 || :
+udevadm trigger --subsystem-match=tpm >/dev/null 2>&1 || :
+
+%postun
+# Reload udev rules when the package is removed
+udevadm control --reload-rules >/dev/null 2>&1 || :
+
 %files
 %license LICENSE.txt
 %doc README.md
 # Setuid root allows regular users to interact with the TPM via pinutil
-%attr(4755, root, root) %{_bindir}/pinutil
+%attr(2755, root, tss) %{_bindir}/pinutil
 %{_libdir}/security/libpinpam.so
 %dir %{_sysconfdir}/pinpam
 %config(noreplace) %{_sysconfdir}/pinpam/policy
