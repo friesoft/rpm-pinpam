@@ -12,6 +12,8 @@ BuildRequires:  rust-packaging >= 21
 BuildRequires:  openssl-devel
 BuildRequires:  tpm2-tss-devel
 BuildRequires:  pam-devel
+BuildRequires:  rust-landlock-devel
+BuildRequires:  rust-privdrop-devel
 
 %description
 TPM2 backed PAM module and utility for pin-based authentication.
