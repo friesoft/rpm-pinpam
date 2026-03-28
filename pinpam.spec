@@ -8,12 +8,10 @@ URL:            https://github.com/RazeLighter777/pinpam
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        pinpam-policy.conf
 
-BuildRequires:  rust-packaging >= 21
+BuildRequires:  cargo
 BuildRequires:  openssl-devel
 BuildRequires:  tpm2-tss-devel
 BuildRequires:  pam-devel
-BuildRequires:  rust-landlock-devel
-BuildRequires:  rust-privdrop-devel
 
 %description
 TPM2 backed PAM module and utility for pin-based authentication.
@@ -22,27 +20,26 @@ to authenticate users.
 
 %prep
 %autosetup -n %{name}-%{version}
-%cargo_prep
-
-%generate_buildrequires
-%cargo_generate_buildrequires
+# No cargo_prep here to allow network access for dependencies
 
 %build
-%cargo_build
+export CARGO_HOME=$(pwd)/.cargo
+cargo build --release --locked
 
 %install
-%cargo_install
-# Setuid for pinutil so it can access the TPM device
+# Custom install since we aren't using %cargo_install
+install -Dpm 0755 target/release/pinutil %{buildroot}%{_bindir}/pinutil
 chmod 4755 %{buildroot}%{_bindir}/pinutil
 
-# Install the PAM module (cargo install doesn't handle cdylibs)
+# Install the PAM module
 install -Dpm 0755 target/release/libpinpam.so %{buildroot}%{_libdir}/security/libpinpam.so
 
 # Install the policy configuration
 install -Dpm 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pinpam/policy.conf
 
 %check
-%cargo_test
+export CARGO_HOME=$(pwd)/.cargo
+cargo test --release --locked
 
 %files
 %license LICENSE.txt
